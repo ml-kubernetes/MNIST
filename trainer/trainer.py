@@ -2,6 +2,7 @@ import argparse
 import numpy as np
 import tensorflow as tf
 from tensorflow.python.keras.layers import *
+import os
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -10,6 +11,10 @@ if __name__ == "__main__":
     parser.add_argument("--batch", type=int, required=True)
     parser.add_argument("--savefile", type=str, required=True)
     args = parser.parse_args()
+
+    dir_path = os.path.dirname(args.savefile)
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
 
     mnist = np.load(args.data)
     train_x, train_y = mnist['x'], mnist['y']
