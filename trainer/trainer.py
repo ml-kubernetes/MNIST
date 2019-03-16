@@ -16,7 +16,7 @@ if __name__ == "__main__":
     train_x = np.expand_dims(train_x, -1) / 255.0
 
     model = tf.keras.models.Sequential([
-        Conv2D(32, (3, 3), activation='relu'),
+        Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
         Conv2D(64, (3, 3), activation='relu'),
         MaxPool2D(pool_size=(2,2)),
         Dropout(0.25),
