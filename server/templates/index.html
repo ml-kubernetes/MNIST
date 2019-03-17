@@ -3,11 +3,12 @@
     <head>
         <meta charset="UTF-8">
         <title>MNIST Test</title>
-        {{ dropzone.load_css() }} {{ dropzone.style('border: 2px dashed #0087F7; margin: 10%; min-height: 400px;') }}
     </head>
-
-    <body>
+   <body>
         <a href="https://github.com/myleott/mnist_png/blob/master/mnist_png.tar.gz">MNIST Test Data Download</a>
-        {{ dropzone.create(action='upload') }} {{ dropzone.load_js() }} {{ dropzone.config() }}
-    </body>
+        <form action = "/upload" method = "POST" enctype = "multipart/form-data">
+            <input type = "file" name = "file" />
+            <input type = "submit"/>
+        </form>
+   </body>
 </html>
