@@ -18,7 +18,7 @@ if __name__ == "__main__":
 
     mnist = np.load(args.data)
     train_x, train_y = mnist['x'], mnist['y']
-    train_x = tf.expand_dims(train_x, -1) / 255.0
+    train_x = np.expand_dims(train_x, -1) / 255.0
 
     model = tf.keras.models.Sequential([
         Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
