@@ -9,10 +9,10 @@ if __name__ == "__main__":
     parser.add_argument("--data", type=str, required=True)
     parser.add_argument("--epoch", type=int, required=True)
     parser.add_argument("--batch", type=int, required=True)
-    parser.add_argument("--savefile", type=str, required=True)
+    parser.add_argument("--savemodel", type=str, required=True)
     args = parser.parse_args()
 
-    dir_path = os.path.dirname(args.savefile)
+    dir_path = os.path.dirname(args.savemodel)
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
 
@@ -32,4 +32,4 @@ if __name__ == "__main__":
     model.compile(optimizer='adam',
                   loss='sparse_categorical_crossentropy', metrics=['accuracy'])
     model.fit(x=train_x, y=train_y, epochs=args.epoch, verbose=1, batch_size=args.batch)
-    model.save(args.savefile)
+    model.save(args.savemodel)
