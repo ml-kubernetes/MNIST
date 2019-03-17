@@ -23,12 +23,10 @@ app.config.update(
 )
 
 dropzone = Dropzone(app)
-def load_model():
-    global model
-    model = tf.keras.models.load_model('./model.h5', compile=False)
-    model._make_predict_function()
-    global session
-    session = tf.keras.backend.get_session()
+
+model = tf.keras.models.load_model('model.h5', compile=False)
+model._make_predict_function()
+session = tf.keras.backend.get_session()
 
 @app.route('/')
 def index():
@@ -43,6 +41,7 @@ def upload():
 
         data = np.array([np.array(img.open(fname).resize((28, 28), img.ANTIALIAS))])
         data = np.expand_dims(data, -1) / 255.0
+
         with session.as_default():
             predict = model.predict(data)
             predict = np.argmax(predict[0])
@@ -50,5 +49,4 @@ def upload():
         return str(predict)
 
 if __name__ == '__main__':
-    load_model()
     app.run(host='0.0.0.0', debug=True)
