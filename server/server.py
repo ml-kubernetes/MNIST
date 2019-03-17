@@ -22,7 +22,7 @@ def upload():
         fname = secure_filename(f.filename)
         f.save(fname)
 
-        data = np.array([np.array(img.open(fname).resize((28, 28), img.ANTIALIAS))])
+        data = np.array([np.array(img.open(fname).convert('L').resize((28, 28), img.ANTIALIAS))])
         data = np.expand_dims(data, -1) / 255.0
 
         with session.as_default():
