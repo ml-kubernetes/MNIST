@@ -19,4 +19,4 @@ if __name__ == "__main__":
             models.append(filename)
 
     averaged_model = average(models)
-    tf.keras.models.save_model(averaged_model, args.savefile)
+    averaged_model.save(args.savefile)
