@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: accuracy-test
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - image: alicek106/ml-kubernetes-mnist:accuracy-test-0.0
+        imagePullPolicy: Always
+        name: accuracy-test
+        args: ["--modelpath", "/mnt/aggregated-model.h5"]
+        volumeMounts:
+          - name: my-pvc-nfs
+            mountPath: "/mnt"
+      volumes:
+      - name: my-pvc-nfs
+        persistentVolumeClaim:
+          claimName: nfs

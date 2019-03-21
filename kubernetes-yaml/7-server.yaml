@@ -1,0 +1,43 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mnist-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: mnist-server
+  template:
+    metadata:
+      labels:
+        name: mnist-server
+    spec:
+      containers:
+      - image: alicek106/ml-kubernetes-mnist:server-0.1
+        imagePullPolicy: Always
+        name: mnist-server
+        args: ["--model", "/mnt/aggregated-model.h5"]
+        volumeMounts:
+          - name: my-pvc-nfs
+            mountPath: "/mnt"
+        ports:
+        - containerPort: 5000
+          name: flask
+      volumes:
+      - name: my-pvc-nfs
+        persistentVolumeClaim:
+          claimName: nfs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mnist-server-svc
+spec:
+  ports:
+    - name: service
+      port: 5000
+      targetPort: 5000
+      nodePort: 30001
+  selector:
+    name: mnist-server
+  type: NodePort

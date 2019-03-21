@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mnist-trainer-{{INCREMENTAL_NUMBER}}
+spec:
+  template:
+    metadata:
+      labels:
+        job-type: trainer
+    spec:
+      restartPolicy: Never
+      containers:
+      - image: alicek106/ml-kubernetes-mnist:trainer-0.3 # 2019. 03. 16 Added relu share
+        args: ["--data", "/mnt/data/{{INCREMENTAL_NUMBER}}.npz", 
+               "--epoch", "{{EPOCH}}", "--batch", "{{BATCH}}", 
+               "--savefile", "/mnt/model/{{INCREMENTAL_NUMBER}}-model.h5"]
+        imagePullPolicy: Always
+        name: mnist-trainer-job
+        volumeMounts:
+          - name: my-pvc-nfs
+            mountPath: "/mnt"
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+               matchExpressions:
+                  - key: "job-type"
+                    operator: In
+                    values:
+                      - trainer
+              topologyKey: "kubernetes.io/hostname"
+
+      volumes:
+      - name: my-pvc-nfs
+        persistentVolumeClaim:
+          claimName: nfs

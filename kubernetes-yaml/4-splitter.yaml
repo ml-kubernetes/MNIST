@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mnist-splitter
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - image: alicek106/ml-kubernetes-mnist:splitter-0.1
+        args: ["--n_container", "{{WORKER_NUMBER}}", "--output_path", "/mnt/data"]
+        imagePullPolicy: Always
+        name: mnist-splitter-pod
+        volumeMounts:
+          - name: my-pvc-nfs
+            mountPath: "/mnt"
+      volumes:
+      - name: my-pvc-nfs
+        persistentVolumeClaim:
+          claimName: nfs

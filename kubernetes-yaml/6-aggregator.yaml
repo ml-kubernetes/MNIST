@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mnist-aggregator
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - image: alicek106/ml-kubernetes-mnist:aggregator-0.1
+        args: ["--dir", "/mnt/model/", "--savefile", "/mnt/aggregated-model.h5"]
+        imagePullPolicy: Always
+        name: mnist-aggregator-pod
+        volumeMounts:
+          - name: my-pvc-nfs
+            mountPath: "/mnt"
+      volumes:
+      - name: my-pvc-nfs
+        persistentVolumeClaim:
+          claimName: nfs
