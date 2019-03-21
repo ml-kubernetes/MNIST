@@ -4,8 +4,13 @@ import tensorflow as tf
 import PIL.Image as img
 from flask import Flask, render_template, request
 from werkzeug import secure_filename
+import argparse
 
-model = tf.keras.models.load_model('model.h5', compile=False)
+parser = argparse.ArgumentParser()
+parser.add_argument("--model", type=str, required=True)
+args = parser.parse_args()
+
+model = tf.keras.models.load_model(args.model, compile=False)
 model._make_predict_function()
 session = tf.keras.backend.get_session()
 
