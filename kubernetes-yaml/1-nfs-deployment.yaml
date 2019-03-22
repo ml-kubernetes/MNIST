@@ -30,5 +30,5 @@ spec:
       volumes:
         - name: mypvc
           gcePersistentDisk:
-            pdName: alicek106-disk
+            pdName: ml-kube-disk
             fsType: ext4
