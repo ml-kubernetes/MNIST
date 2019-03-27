@@ -35,9 +35,8 @@ metadata:
 spec:
   ports:
     - name: service
-      port: 5000
+      port: 80
       targetPort: 5000
-      nodePort: 30001
   selector:
     name: mnist-server
-  type: NodePort
+  type: LoadBalancer
