@@ -21,7 +21,7 @@ We assume that ```gcloud``` is installed and available. If not, please refer the
    ```
    $ gcloud container clusters create my-kube-cluster \
    --zone=us-central1-a \
-   --cluster-version=1.11.7-gke.4 \
+   --cluster-version=1.11.7-gke.12 \
    --disk-size=20GB \
    --disk-type=pd-standard \
    --num-nodes=3
