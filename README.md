@@ -2,8 +2,6 @@
 
 `ml-kubernetes MNIST` is simple project that trains and predicts  `MNIST` dataset in Kubernetes cluster. This projects comducts PoC (Proof of Concept) of distributed machine learning on container environment.
 
-
-
 ## Prerequisite
 
 All steps are done on GKE of Google Cloud Platform. You have to install ```gcloud``` comman line to use GKE.
@@ -40,9 +38,9 @@ We assume that ```gcloud``` is installed and available. If not, please refer the
    ```
    $ kubectl get nodes
    NAME                                             STATUS   ROLES    AGE   VERSION
-   gke-my-kube-cluster-default-pool-d0ed872d-33mt   Ready    <none>   49s   v1.11.7-gke.4
-   gke-my-kube-cluster-default-pool-d0ed872d-gd42   Ready    <none>   49s   v1.11.7-gke.4
-   gke-my-kube-cluster-default-pool-d0ed872d-wpv4   Ready    <none>   49s   v1.11.7-gke.4
+   gke-my-kube-cluster-default-pool-d0ed872d-33mt   Ready    <none>   49s   v1.11.7-gke.12
+   gke-my-kube-cluster-default-pool-d0ed872d-gd42   Ready    <none>   49s   v1.11.7-gke.12
+   gke-my-kube-cluster-default-pool-d0ed872d-wpv4   Ready    <none>   49s   v1.11.7-gke.12
    ```
 
 3. Create a external disk to provide dataset to each Kubernetes node. 
@@ -59,6 +57,20 @@ We assume that ```gcloud``` is installed and available. If not, please refer the
    
 
 
+
+## Architecture Diagram
+
+<p align="center"><img src="https://github.com/ml-kubernetes/MNIST/raw/master/jpg/mnist-kube.png"></p>
+
+1. ```Splitter``` split MNIST dataset into multiple dataset.
+
+2. ```Trainer``` conducts distributed learning process in Kubernetes container.
+
+3. ```Aggregator``` aggregates output models extracted from step 2.
+
+4. ```Server``` container provides web page to demonstrate MNIST prediction.
+
+   
 
 ## Quickstart of Distributed MNIST
 
@@ -178,11 +190,29 @@ We assume that ```gcloud``` is installed and available. If not, please refer the
 
 
 
-6. Create Server
+6. Create ```server``` deployment for demo. You can test MNIST prediction.
 
-   // TODO : test Server
+   ```
+   $ kubectl apply -f 7-server.yaml
+   ```
 
-   
+   After a few seconds, you can see the external IP to access the demo web page. Below example shows external IP is a.b.c.d, so you can access a.b.c.d:80 in web browser
+
+   ```
+   $ kubectl get svc
+   NAME               TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)                      AGE
+   ...
+   mnist-server-svc   LoadBalancer   10.19.253.70   a.b.c.d   80:30284/TCP                 12m
+   ...
+   ```
+
+   Upload a sample MNIST dataset located in ```samples/``` directory, such as 6.jpg.
+
+   <p align="center"><img src="https://github.com/ml-kubernetes/MNIST/raw/master/jpg/upload.png" width="500" height="230"></p>
+
+   After uploading MNIST sample, web pasge shows prediction result.
+
+   <p align="center"><img src="https://github.com/ml-kubernetes/MNIST/raw/master/jpg/predict.png" width="470" height="210"></p>
 
 ## Detailed Arguments of Each Component
 
@@ -239,4 +269,3 @@ We assume that ```gcloud``` is installed and available. If not, please refer the
      ```python 
      model = tf.keras.models.load_model('your_model.h5', compile=False)
      ```
-
