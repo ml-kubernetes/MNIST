@@ -210,7 +210,7 @@ We assume that ```gcloud``` is installed and available. If not, please refer the
 
    <p align="center"><img src="https://github.com/ml-kubernetes/MNIST/raw/master/jpg/upload.png" width="500" height="230"></p>
 
-   After uploading MNIST sample, web pasge shows prediction result.
+   After uploading MNIST sample, web page shows prediction result.
 
    <p align="center"><img src="https://github.com/ml-kubernetes/MNIST/raw/master/jpg/predict.png" width="470" height="210"></p>
 
